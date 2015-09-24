@@ -10,4 +10,4 @@ Pagination({tag: '#panel'}).onclick(function (page) {
     alert(page);
 });
 ```
-[Download an example](https://github.com/Poznakomlus/pagination/archive/master.zip)
+[Download all example](https://github.com/Poznakomlus/pagination/archive/master.zip)
