@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Панель навигации</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container">
+    <h3>Variant 1</h3>
+
+    <div id="panel1"></div>
+    <h3>Variant 2</h3>
+
+    <div id="panel2"></div>
+    <h3>Variant 3</h3>
+
+    <div id="panel3"></div>
+    <h3>Variant 4</h3>
+
+    <div id="panel4"></div>
+    <h3>Variant 5</h3>
+
+    <div id="panel5"></div>
+    <h3>Variant 6</h3>
+
+    <div id="panel6"></div>
+    <h3>Variant 7</h3>
+
+    <div id="panel7"></div>
+    <h3>Variant 8</h3>
+
+    <div id="current_page">Click on page:</div>
+    <div id="panel8"></div>
+    <h3>Variant 9</h3>
+
+    <div id="panel9"></div>
+    <input type="button" class="btn btn-default" value="Show current page" id="show_page">
+
+    <h3>Variant 10</h3>
+
+    <div id="panel10"></div>
+    <input id="range" type="range" min="1" max="100" value="1">
+    <br>
+    <br>
+</div>
+<script src="pagination.js"></script>
+<script>
+    Pagination(
+            {
+                tag: '#panel1',
+                sizing: 'pagination-sm',
+                current: 3
+            }
+    ).onclick(showPage);
+    Pagination(
+            {
+                tag: '#panel2'
+            }
+    ).onclick(showPage);
+    Pagination(
+            {
+                tag: '#panel3',
+                sizing: 'pagination-lg',
+                current: 5
+            }
+    ).onclick(showPage);
+    Pagination(
+            {
+                tag: '#panel4',
+                prev_next: false,
+                current: 2
+            }
+    ).onclick(showPage);
+    Pagination(
+            {
+                tag: '#panel5',
+                first_last: false,
+                current: 4
+            }
+    ).onclick(showPage);
+    Pagination(
+            {
+                tag: '#panel6',
+                prev_next: false,
+                first_last: false
+            }
+    ).onclick(showPage);
+    Pagination(
+            {
+                tag: '#panel7',
+                row: 7, // кол-во в ряду
+                total: 32, // всего
+                step: 7, // перелистывать по
+                current: 7, // текущая позиция
+                prev_text: 'Назад', // prev text
+                next_text: 'Вперед', // next text
+                last_text: 'Вконец', // last text
+                first_text: 'Вначало' // first text
+            }
+    ).onclick(showPage);
+    Pagination(
+            {
+                tag: '#panel8'
+            }
+    ).onclick(function (page) {
+        document.getElementById('current_page').innerHTML = 'Click on page: ' + page;
+    });
+    var panel9 = Pagination(
+            {
+                tag: '#panel9'
+            }
+    );
+    document.getElementById('show_page').addEventListener('click', function () {
+        alert(panel9.current);
+    }, false);
+    var panel10 = Pagination(
+            {
+                tag: '#panel10',
+                row: 10, // кол-во в ряду
+                total: 100 // всего
+            }
+    );
+    var range = document.getElementById('range');
+    range.addEventListener('change', function () {
+        panel10.current = this.value;
+    }, false);
+    panel10.onclick(function (page) {
+        range.value = page;
+    });
+    function showPage(page) {
+        alert('Page: ' + page);
+    }
+</script>
+</body>
+</html>
