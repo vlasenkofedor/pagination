@@ -1,5 +1,7 @@
 # Dynamic pagination in Bootstrap
-Bootstrap Pagination
+Dual licensed under the [MIT](http://www.opensource.org/licenses/mit-license.php) and [GPL](http://www.gnu.org/licenses/gpl.html) licenses
+Support [AMD Module](https://github.com/amdjs/amdjs-api/blob/master/AMD.md)
+##Bootstrap Pagination
 Creation of dynamic navigation with use of Bootstrap Pagination
 ###Example
 ```html
