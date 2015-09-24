@@ -9,11 +9,12 @@ Creation of dynamic navigation with use of Bootstrap Pagination
 -------------------------------------------
 ```html
 <div id="panel"></div>
-```
-```js
+<script src="pagination.js"></script>
+<script>
 Pagination({tag: '#panel'}).onclick(function (page) {
     alert(page);
 });
+</script>
 ```
 ###Result
 -------------------------------------------
