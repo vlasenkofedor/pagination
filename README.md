@@ -1,4 +1,4 @@
-# pagination
+# Dynamic pagination in Bootstrap Pagination
 Bootstrap Pagination
 Creation of dynamic navigation with use of Bootstrap Pagination
 
