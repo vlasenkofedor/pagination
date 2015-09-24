@@ -15,4 +15,8 @@ Pagination({tag: '#panel'}).onclick(function (page) {
     alert(page);
 });
 ```
+###Result
+-------------------------------------------
+![Pagination](https://raw.githubusercontent.com/Poznakomlus/pagination/master/pagination.png)
+
 [Download all example](https://github.com/Poznakomlus/pagination/archive/master.zip)
