@@ -6,7 +6,7 @@
  * http://www.opensource.org/licenses/mit-license.php
  * http://www.gnu.org/licenses/gpl.html
  *
- * @version 0.0.1
+ * @version 0.0.2
  */
 
 (function (root, factory) {
@@ -33,8 +33,6 @@
     }
 
     Pagination.prototype = {
-        start: 0,
-        element: null,
         params: {
             tag: '', // element tag
             row: 5, // quantity in row
@@ -53,8 +51,8 @@
             var self = this;
             var def_params = this.params;
             if (params && params.hasOwnProperty('tag') && typeof params.tag === 'string') {
-                this.element = document.querySelector(params.tag);
-                if (!this.element) {
+                this.__element = document.querySelector(params.tag);
+                if (!this.__element) {
                     throw Error("Pagination: element with this tag isn't found");
                 }
             } else {
@@ -67,27 +65,27 @@
                 }
                 return previous;
             }, params);
-            this.element.addEventListener("click", function (event) {
+            this.__element.addEventListener("click", function (event) {
                 var el = event ? event.target : window.event.srcElement;
                 var parent = el.parentNode;
                 event.preventDefault();
                 if (parent.tagName != "LI" || parent.className.indexOf('disabled') !== -1) return;
                 if (parent.className && parent.className != "active") {
                     self[parent.className].call(self);
-                } else if (self.current != +el.innerHTML) {
-                    self.current = +el.innerHTML;
-                    self.callback(self.current);
+                } else if (self.value != +el.innerHTML) {
+                    self.value = +el.innerHTML;
+                    self.__callback && self.__callback(self.value);
                 }
             }, false);
-            this.current = this.params.current;
+            this.value = this.params.current;
         },
         build: function () {
-            var start = this.start;
+            var start = this.__start || 0;
             var col = this.params.row + start;
             var html = '<ul class="pagination' + (this.params.sizing ? ' ' + this.params.sizing : '') + '">';
             var style = '';
-            var begin = this.start == 0;
-            var end = this.start != this.params.total - this.params.row;
+            var begin = this.__start == 0;
+            var end = this.__start != this.params.total - this.params.row;
 
             function render(value, style) {
                 return '<li' + (style ? ' class="' + style + '"' : '') + '><a href="#">' + value + '</a></li>';
@@ -103,7 +101,7 @@
             }
             while (++start <= col) {
                 if (start > this.params.total) break;
-                style = start == this.current ? 'active' : '';
+                style = start == this.value ? 'active' : '';
                 html += render(start, style);
             }
             if (this.params.prev_next) {
@@ -115,7 +113,7 @@
                 html += render(this.params.last_text, style);
             }
             html += '</ul>';
-            this.element.innerHTML = html;
+            this.__element.innerHTML = html;
         },
         /**
          * Show current page
@@ -125,54 +123,52 @@
             if (typeof callback != "function") {
                 throw Error("Pagination: callback onclick isn't function");
             }
-            this.callback = callback;
+            this.__callback = callback;
         },
         first: function () {
-            if (this.start != 0) {
-                this.start = 0;
+            if (this.__start != 0) {
+                this.__start = 0;
                 this.build();
             }
         },
         last: function () {
             var end = this.params.total - this.params.row;
-            if (this.start != end) {
-                this.start = end;
+            if (this.__start != end) {
+                this.__start = end;
                 this.build();
             }
         },
         next: function () {
-            var start = this.start;
+            var start = this.__start;
             var diff = this.params.total - this.params.row;
-            this.start += this.params.step;
-            if (this.start >= diff) {
-                this.start = diff;
+            this.__start += this.params.step;
+            if (this.__start >= diff) {
+                this.__start = diff;
             }
-            if (start != this.start) this.build();
+            if (start != this.__start) this.build();
         },
         prev: function () {
-            var start = this.start;
-            if (this.start < this.params.step) {
-                this.start = 0;
+            var start = this.__start;
+            if (this.__start < this.params.step) {
+                this.__start = 0;
             } else {
-                this.start -= this.params.step;
+                this.__start -= this.params.step;
                 var diff = this.params.total - this.params.row;
-                if (this.start >= diff) {
-                    this.start = diff - this.params.step;
+                if (this.__start >= diff) {
+                    this.__start = diff - this.params.step;
                 }
             }
-            if (start != this.start) this.build();
+            if (start != this.__start) this.build();
         },
-        get current() {
+        get value() {
             return this.params.current;
         },
-        set current(value) {
+        set value(value) {
             this.params.current = value;
-            if (!(value > this.start && value <= this.start + this.params.row)) {
-                this.start = Math.floor((value - 1) / this.params.row) * this.params.row;
+            if (!(value > this.__start && value <= this.__start + this.params.row)) {
+                this.__start = Math.floor((value - 1) / this.params.row) * this.params.row;
             }
             this.build();
-        },
-        callback: function (page) {
         }
     };
     return Pagination;

@@ -113,7 +113,7 @@
             }
     );
     document.getElementById('show_page').addEventListener('click', function () {
-        alert(panel9.current);
+        alert(panel9.value);
     }, false);
     var panel10 = Pagination(
             {
@@ -124,7 +124,7 @@
     );
     var range = document.getElementById('range');
     range.addEventListener('change', function () {
-        panel10.current = this.value;
+        panel10.value = this.value;
     }, false);
     panel10.onclick(function (page) {
         range.value = page;
