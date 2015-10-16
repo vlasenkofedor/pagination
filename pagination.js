@@ -51,8 +51,8 @@
             var self = this;
             var def_params = this.params;
             if (params && params.hasOwnProperty('tag') && typeof params.tag === 'string') {
-                this.__element = document.querySelector(params.tag);
-                if (!this.__element) {
+                this._element = document.querySelector(params.tag);
+                if (!this._element) {
                     throw Error("Pagination: element with this tag isn't found");
                 }
             } else {
@@ -65,7 +65,7 @@
                 }
                 return previous;
             }, params);
-            this.__element.addEventListener("click", function (event) {
+            this._element.addEventListener("click", function (event) {
                 var el = event ? event.target : window.event.srcElement;
                 var parent = el.parentNode;
                 event.preventDefault();
@@ -74,18 +74,18 @@
                     self[parent.className].call(self);
                 } else if (self.value != +el.innerHTML) {
                     self.value = +el.innerHTML;
-                    self.__callback && self.__callback(self.value);
+                    self._callback && self._callback(self.value);
                 }
             }, false);
             this.value = this.params.current;
         },
         build: function () {
-            var start = this.__start || 0;
+            var start = this._start || 0;
             var col = this.params.row + start;
             var html = '<ul class="pagination' + (this.params.sizing ? ' ' + this.params.sizing : '') + '">';
             var style = '';
-            var begin = this.__start == 0;
-            var end = this.__start != this.params.total - this.params.row;
+            var begin = this._start == 0;
+            var end = this._start != this.params.total - this.params.row;
 
             function render(value, style) {
                 return '<li' + (style ? ' class="' + style + '"' : '') + '><a href="#">' + value + '</a></li>';
@@ -113,7 +113,7 @@
                 html += render(this.params.last_text, style);
             }
             html += '</ul>';
-            this.__element.innerHTML = html;
+            this._element.innerHTML = html;
         },
         /**
          * Show current page
@@ -123,50 +123,50 @@
             if (typeof callback != "function") {
                 throw Error("Pagination: callback onclick isn't function");
             }
-            this.__callback = callback;
+            this._callback = callback;
         },
         first: function () {
-            if (this.__start != 0) {
-                this.__start = 0;
+            if (this._start != 0) {
+                this._start = 0;
                 this.build();
             }
         },
         last: function () {
             var end = this.params.total - this.params.row;
-            if (this.__start != end) {
-                this.__start = end;
+            if (this._start != end) {
+                this._start = end;
                 this.build();
             }
         },
         next: function () {
-            var start = this.__start;
+            var start = this._start;
             var diff = this.params.total - this.params.row;
-            this.__start += this.params.step;
-            if (this.__start >= diff) {
-                this.__start = diff;
+            this._start += this.params.step;
+            if (this._start >= diff) {
+                this._start = diff;
             }
-            if (start != this.__start) this.build();
+            if (start != this._start) this.build();
         },
         prev: function () {
-            var start = this.__start;
-            if (this.__start < this.params.step) {
-                this.__start = 0;
+            var start = this._start;
+            if (this._start < this.params.step) {
+                this._start = 0;
             } else {
-                this.__start -= this.params.step;
+                this._start -= this.params.step;
                 var diff = this.params.total - this.params.row;
-                if (this.__start >= diff) {
-                    this.__start = diff - this.params.step;
+                if (this._start >= diff) {
+                    this._start = diff - this.params.step;
                 }
             }
-            if (start != this.__start) this.build();
+            if (start != this._start) this.build();
         },
         get value() {
             return this.params.current;
         },
         set value(value) {
             this.params.current = value;
-            if (!(value > this.__start && value <= this.__start + this.params.row)) {
-                this.__start = Math.floor((value - 1) / this.params.row) * this.params.row;
+            if (!(value > this._start && value <= this._start + this.params.row)) {
+                this._start = Math.floor((value - 1) / this.params.row) * this.params.row;
             }
             this.build();
         }
