@@ -10,14 +10,14 @@
  */
 
 (function (root, factory) {
-    if (typeof exports === "object") {
+    if (typeof exports === "object" && typeof module === 'object') {
         module.exports = factory();
     } else if (typeof define === 'function' && define.amd) {
-        define(factory);
+        define([], factory);
     } else {
-        root.Pagination = factory();
+        root["Pagination"] = factory();
     }
-}(window, function () {
+}(this, function () {
 
     /**
      * Page navigation panel
